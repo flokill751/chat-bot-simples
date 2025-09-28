@@ -1,103 +1,104 @@
-import { useState } from "react"
-import { FiSend, FiMenu } from "react-icons/fi"
-
-interface Message {
-  role: "user" | "bot"
-  content: string
-}
+import { useState, useRef, useEffect } from "react";
+import SidebarDrawer from "./componets/siderBar/SidebarDrawer";
+import { enviarMensagem } from "./api";
 
 export default function App() {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", content: "👋 Olá, eu sou o ChatBot! Pergunte-me qualquer coisa." },
-  ])
-  const [input, setInput] = useState("")
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [mensagem, setMensagem] = useState("");
+  const [conversa, setConversa] = useState<{ autor: string; texto: string }[]>([]);
+  const [conversasList, setConversasList] = useState<string[]>(["Chat atual"]);
+  const [conversaAtual, setConversaAtual] = useState<number>(0); // Adicionei esta linha
+  const mensagensEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
-    if (!input.trim()) return
+  useEffect(() => {
+    mensagensEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [conversa]);
 
-    const newMessage: Message = { role: "user", content: input }
-    setMessages([...messages, newMessage])
+  const handleEnviar = async () => {
+    if (!mensagem.trim()) return;
 
-    // resposta fake só pra UI
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", content: "🤖 Resposta automática para: " + input },
-      ])
-    }, 800)
+    setConversa((prev) => [...prev, { autor: "Você", texto: mensagem }]);
+    setMensagem("");
 
-    setInput("")
-  }
+    try {
+      const resposta = await enviarMensagem(mensagem);
+      setConversa((prev) => [...prev, { autor: "Kimera.UIA", texto: resposta.resposta }]);
+    } catch (err) {
+      setConversa((prev) => [...prev, { autor: "Erro", texto: String(err) }]);
+    }
+  };
+
+  const handleNovoChat = () => {
+    setConversa([]);
+    const novoIndex = conversasList.length;
+    setConversasList((prev) => [...prev, `Chat ${prev.length + 1}`]);
+    setConversaAtual(novoIndex); // Atualiza a conversa atual
+  };
+
+  // Adicionei esta função para lidar com a seleção de conversas
+  const handleSelecionarConversa = (index: number) => {
+    setConversaAtual(index);
+    // Aqui você pode adicionar lógica para carregar a conversa selecionada
+    // Por exemplo, carregar do localStorage ou de um estado global
+    setConversa([{
+      autor: "Kimera.UIA",
+      texto: `Bem-vindo de volta ao ${conversasList[index]}! Como posso ajudar?`
+    }]);
+  };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
-      {/* Sidebar */}
-      <aside
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-gray-800 p-4 transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform md:translate-x-0`}
-      >
-        <h2 className="text-xl font-bold mb-6">💬 Meus Chats</h2>
-        <button className="w-full bg-blue-600 py-2 rounded mb-4 hover:bg-blue-500">
-          + Novo Chat
-        </button>
-        <ul className="space-y-2">
-          <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">Conversa 1</li>
-          <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">Conversa 2</li>
-        </ul>
-      </aside>
+    <div className="flex h-screen font-sans bg-gray-900 text-white p-2">
+      {/* Sidebar fixa */}
+      <SidebarDrawer
+        conversasList={conversasList}
+        onNovoChat={handleNovoChat}
+        onSelecionarConversa={handleSelecionarConversa}
+        conversaAtual={conversaAtual}
+      />
 
-      {/* Conteúdo principal */}
-      <main className="flex-1 flex flex-col">
-        {/* Top bar */}
-        <header className="p-4 border-b border-gray-700 flex items-center md:hidden">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <FiMenu size={24} />
-          </button>
-          <h1 className="ml-4 font-bold text-lg">ChatBot</h1>
-        </header>
-
-        {/* Área de mensagens */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((msg, idx) => (
+      {/* Chat principal */}
+      <main className="flex-1 flex flex-col bg-gray-900 rounded-2xl border border-gray-700 mx-2">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
+          {conversa.map((msg, i) => (
             <div
-              key={idx}
-              className={`flex ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`px-4 py-2 rounded-2xl max-w-xs md:max-w-md ${
-                  msg.role === "user"
-                    ? "bg-blue-600 text-white rounded-br-none"
-                    : "bg-gray-700 text-gray-100 rounded-bl-none"
+              key={i}
+              className={`max-w-[70%] p-4 rounded-2xl break-words shadow-md ${msg.autor === "Você"
+                ? "bg-gray-700 self-end ml-auto"
+                : "bg-gray-800 self-start mr-auto flex items-start gap-2"
                 }`}
-              >
-                {msg.content}
+            >
+              {msg.autor !== "Você" && (
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold">
+                  A
+                </div>
+              )}
+              <div>
+                <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
+                {msg.texto}
               </div>
             </div>
           ))}
+          <div ref={mensagensEndRef} />
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-700 bg-gray-800 flex">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Digite sua mensagem..."
-            className="flex-1 p-3 rounded-l-2xl bg-gray-700 text-white focus:outline-none"
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-          <button
-            onClick={handleSend}
-            className="bg-blue-600 px-4 flex items-center justify-center rounded-r-2xl hover:bg-blue-500 transition"
-          >
-            <FiSend size={20} />
-          </button>
+        <div className="p-4 border-t border-gray-700 flex bg-gray-900">
+          <div className="flex flex-1 rounded-full bg-gray-800 border border-gray-600 overflow-hidden">
+            <input
+              value={mensagem}
+              onChange={(e) => setMensagem(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleEnviar()}
+              placeholder="Send a message to AcmeAI"
+              className="flex-1 p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              onClick={handleEnviar}
+              className="px-6 bg-blue-600 hover:bg-blue-500 text-white"
+            >
+              Send
+            </button>
+          </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

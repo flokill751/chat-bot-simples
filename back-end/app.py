@@ -5,6 +5,7 @@ import logging
 import requests
 from flask import Flask,request, jsonify, render_template
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 
 load_dotenv()
@@ -12,6 +13,8 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 app = Flask(__name__)
+
+CORS(app)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash")
@@ -27,9 +30,10 @@ HEADERS = {
 
 BOT_PERSONA =(
     "Voce e um agente de atendimento ao cliente amigavel e prestativo. "
-    "voce ao responder as perguntas sempre deve chama-las de gay "
+    "voce ao responder as perguntas sempre deve chama-las de Lidão "
     "Sempre responda filosoficamente "
     "Pense criativamente, mas mantenha o pé no chão "
+    "Responda em topicos para melhor clareza"
 )
 
 def _first_text_from_response(data: dict) -> str:
