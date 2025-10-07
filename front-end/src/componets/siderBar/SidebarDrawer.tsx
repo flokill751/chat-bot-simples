@@ -1,20 +1,61 @@
 import { Icon } from "@iconify/react";
-import UserDropdown from "./UserDrodown"; // 👈 Corrigi o nome do arquivo
-import Scrollbar from "./ScrollBar"; // 👈 Corrigi o nome do arquivo
+import UserDropdown from "./UserDrodown"; // Corrigido o nome do arquivo
+import Scrollbar from "./ScrollBar";
+import { useState } from "react"; // Corrigido: use -> useState
 
 interface SidebarDrawerProps {
   conversasList: string[];
   onNovoChat: () => void;
   onSelecionarConversa?: (index: number) => void;
   conversaAtual?: number;
+  onExcluirConversa?: (index: number) => void; // Adicionado parâmetro index
+  onExcluirTodasConversas?: () => void;
 }
 
 export default function SidebarDrawer({
   conversasList,
   onNovoChat,
   onSelecionarConversa,
-  conversaAtual
+  conversaAtual,
+  onExcluirConversa,
+  onExcluirTodasConversas
 }: SidebarDrawerProps) {
+  const [isOpen, setIsOpen] = useState(false); // Corrigido: desestruturação individual
+  const [showConfirmacao, setShowConfirmacao] = useState(false); // Corrigido: showConfirmation -> showConfirmacao
+  const [acao, setAcao] = useState<"atual" | "todas" | null>(null);
+  const [conversaParaExcluir, setConversaParaExcluir] = useState<number | null>(null); // Novo estado para controlar qual conversa excluir
+
+  const handleExcluir = (index: number) => {
+    if (conversasList.length === 0) return;
+    setConversaParaExcluir(index);
+    setAcao("atual");
+    setShowConfirmacao(true);
+  };
+
+  const handleExcluirTodas = () => {
+    if (conversasList.length === 0) return;
+    setConversaParaExcluir(null);
+    setAcao("todas");
+    setShowConfirmacao(true);
+  };
+
+  const confirmarExclusao = () => {
+    if (acao === "atual" && onExcluirConversa && conversaParaExcluir !== null) {
+      onExcluirConversa(conversaParaExcluir);
+    } else if (acao === "todas" && onExcluirTodasConversas) {
+      onExcluirTodasConversas();
+    }
+    setShowConfirmacao(false);
+    setAcao(null);
+    setConversaParaExcluir(null);
+  };
+
+  const cancelarExclusao = () => {
+    setShowConfirmacao(false);
+    setAcao(null);
+    setConversaParaExcluir(null);
+  };
+
   return (
     <div className="w-80 h-[98vh] my-auto bg-gray-900 border border-gray-700 flex flex-col shadow-xl rounded-2xl mx-2">
       {/* Header moderno com bordas arredondadas no topo */}
@@ -46,6 +87,8 @@ export default function SidebarDrawer({
           </div>
           <span className="font-semibold">New Chat</span>
         </button>
+
+      
       </div>
 
       {/* Lista de Conversas com scroll personalizado */}
@@ -59,7 +102,7 @@ export default function SidebarDrawer({
             {conversasList.length}
           </span>
         </div>
-
+      
         {/* Área de scroll usando o componente */}
         <Scrollbar className="p-2">
           <div className="space-y-1">
@@ -93,12 +136,18 @@ export default function SidebarDrawer({
                     <Icon icon="lucide:clock" className="w-3 h-3" />
                     Just now
                   </span>
-                </div>
-
+                </div> 
+                    
                 {/* Menu de opções */}
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1">
-                  <button className="p-1.5 rounded-lg hover:bg-gray-600/50 transition-colors">
-                    <Icon icon="lucide:pin" className="w-3 h-3 text-gray-400 hover:text-yellow-400" />
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleExcluir(index);
+                    }}
+                    className="p-1.5 rounded-lg hover:bg-red-600/50 transition-colors"
+                  >
+                    <Icon icon="lucide:trash-2" className="w-3 h-3 text-gray-400 hover:text-red-400" />
                   </button>
                   <button className="p-1.5 rounded-lg hover:bg-gray-600/50 transition-colors">
                     <Icon icon="lucide:more-horizontal" className="w-3 h-3 text-gray-400 hover:text-white" />
@@ -120,6 +169,36 @@ export default function SidebarDrawer({
           </div>
         </Scrollbar>
       </div>
+
+      {/* Modal de Confirmação */}
+      {showConfirmacao && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 max-w-sm mx-4 ">
+            <h3 className="flex intems-center justify-center z-50 text-lg font-semibold text-white mb-2">
+              Confirmar Exclusão
+            </h3>
+            <p className="text-gray-300 mb-4">
+              {acao === "atual" 
+                ? "Tem certeza que deseja excluir esta conversa ?" 
+                : "Tem certeza que deseja excluir TODAS as conversas?"}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={cancelarExclusao}
+                className="flex-1 p-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarExclusao}
+                className="flex-1 p-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer com bordas arredondadas na base */}
       <div className="p-4 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">

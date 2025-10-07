@@ -10,6 +10,6 @@ export default {
   darkMode: "class",
   plugins: [heroui(), require("tailwind-scrollbar")],
   theme: {
-    extend: {},
+    
   },
 };
