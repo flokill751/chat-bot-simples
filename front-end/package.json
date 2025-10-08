@@ -16,6 +16,7 @@
     "@heroui/system": "^2.4.22",
     "@heroui/theme": "^2.4.22",
     "@iconify/react": "^6.0.2",
+    "@nextui-org/react": "^2.6.11",
     "@tailwindcss/vite": "^4.1.13",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.22",

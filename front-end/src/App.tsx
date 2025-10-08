@@ -3,10 +3,10 @@ import SidebarDrawer from "./componets/siderBar/SidebarDrawer"; // Caminho corri
 import { enviarMensagem } from "./api";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react";
-import { Particles }  from "./componets/Background/Pontinho";
+import { Particles } from "./componets/background/Pontinho";
 
 interface Mensagem {
-  id: string; // Adicionei ID único
+  id: string;
   autor: string;
   texto: string;
   timestamp?: string;
@@ -176,25 +176,25 @@ export default function App() {
         conversaAtual={conversaAtual}
       />
 
-       <main className="flex-1 flex flex-col bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 mx-2 relative overflow-hidden">
-      {/* Fundo com partículas */}
-      <Particles
-        quantity={300}
-        color="#ff79b6ff"
-        size={1}
-        staticity={45}
-        ease={80}
-        className="opacity-100"
-      />
-        
+      <main className="flex-1 flex flex-col bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 mx-2 relative overflow-hidden">
+        {/* Fundo com partículas */}
+        <Particles
+          quantity={350}
+          color="#c57676ff"
+          size={1}
+          staticity={45}
+          ease={80}
+          className="opacity-85"
+        />
+
         {/* Mensagens */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 relative z-10">
           {conversa.map((msg) => (
             <div
               key={msg.id}
               className={`max-w-[70%] p-4 rounded-2xl break-words shadow-md flex ${msg.autor === "Você"
-                  ? "bg-gray-700 self-end ml-auto"
-                  : "bg-gray-800 self-start mr-auto"
+                ? "bg-gray-700 self-end ml-auto"
+                : "bg-gray-800 self-start mr-auto"
                 }`}
             >
               {msg.autor !== "Você" && (

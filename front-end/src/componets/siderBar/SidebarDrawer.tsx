@@ -1,15 +1,17 @@
-import { Icon } from "@iconify/react";
-import UserDropdown from "./UserDrodown"; // Corrigido o nome do arquivo
-import Scrollbar from "./ScrollBar";
-import { useState } from "react"; // Corrigido: use -> useState
+"use client"
+
+import { Icon } from "@iconify/react"
+import UserDropdown from "./UserDrodown"
+import Scrollbar from "./ScrollBar"
+import { useState } from "react"
+import ChatDropdown from "./ChatDropdown"
 
 interface SidebarDrawerProps {
-  conversasList: string[];
-  onNovoChat: () => void;
-  onSelecionarConversa?: (index: number) => void;
-  conversaAtual?: number;
-  onExcluirConversa?: (index: number) => void; // Adicionado parâmetro index
-  onExcluirTodasConversas?: () => void;
+  conversasList: string[]
+  onNovoChat: () => void
+  onSelecionarConversa?: (index: number) => void
+  conversaAtual?: number
+  onExcluirConversa?: (index: number) => void
 }
 
 export default function SidebarDrawer({
@@ -18,43 +20,8 @@ export default function SidebarDrawer({
   onSelecionarConversa,
   conversaAtual,
   onExcluirConversa,
-  onExcluirTodasConversas
 }: SidebarDrawerProps) {
-  const [isOpen, setIsOpen] = useState(false); // Corrigido: desestruturação individual
-  const [showConfirmacao, setShowConfirmacao] = useState(false); // Corrigido: showConfirmation -> showConfirmacao
-  const [acao, setAcao] = useState<"atual" | "todas" | null>(null);
-  const [conversaParaExcluir, setConversaParaExcluir] = useState<number | null>(null); // Novo estado para controlar qual conversa excluir
 
-  const handleExcluir = (index: number) => {
-    if (conversasList.length === 0) return;
-    setConversaParaExcluir(index);
-    setAcao("atual");
-    setShowConfirmacao(true);
-  };
-
-  const handleExcluirTodas = () => {
-    if (conversasList.length === 0) return;
-    setConversaParaExcluir(null);
-    setAcao("todas");
-    setShowConfirmacao(true);
-  };
-
-  const confirmarExclusao = () => {
-    if (acao === "atual" && onExcluirConversa && conversaParaExcluir !== null) {
-      onExcluirConversa(conversaParaExcluir);
-    } else if (acao === "todas" && onExcluirTodasConversas) {
-      onExcluirTodasConversas();
-    }
-    setShowConfirmacao(false);
-    setAcao(null);
-    setConversaParaExcluir(null);
-  };
-
-  const cancelarExclusao = () => {
-    setShowConfirmacao(false);
-    setAcao(null);
-    setConversaParaExcluir(null);
-  };
 
   return (
     <div className="w-80 h-[98vh] my-auto bg-gray-900 border border-gray-700 flex flex-col shadow-xl rounded-2xl mx-2">
@@ -66,9 +33,9 @@ export default function SidebarDrawer({
           </div>
           <div>
             <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Kimera UIA
+              Kimera
             </h2>
-            <p className="text-xs text-gray-400 font-medium">AI Assistant</p>
+            <p className="text-xs text-gray-400 font-medium">O demonio da sua ia </p>
           </div>
         </div>
       </div>
@@ -85,24 +52,20 @@ export default function SidebarDrawer({
           <div className="p-1.5 rounded-lg bg-white/20 group-hover:bg-white/30 transition-colors">
             <Icon icon="lucide:plus" className="w-4 h-4" />
           </div>
-          <span className="font-semibold">New Chat</span>
+          <span className="font-semibold">Novo Chat</span>
         </button>
-
-      
       </div>
 
       {/* Lista de Conversas com scroll personalizado */}
       <div className="flex-1 flex flex-col min-h-0">
         {/* Header fixo */}
         <div className="flex items-center justify-between px-2 py-3 bg-gray-900 border-b border-gray-700/50 sticky top-0 z-10">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Conversations
-          </h3>
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Conversas</h3>
           <span className="text-xs bg-gray-800 text-gray-400 px-2 py-1 rounded-full min-w-[20px] text-center">
             {conversasList.length}
           </span>
         </div>
-      
+
         {/* Área de scroll usando o componente */}
         <Scrollbar className="p-2">
           <div className="space-y-1">
@@ -111,47 +74,45 @@ export default function SidebarDrawer({
                 key={index}
                 onClick={() => onSelecionarConversa?.(index)}
                 className={`flex items-center gap-3 w-full p-3 rounded-xl text-left transition-all duration-200 group relative
-                     ${conversaAtual === index
-                    ? 'bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-blue-500/10'
-                    : 'text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50'
-                  }`}
+                     ${
+                       conversaAtual === index
+                         ? "bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-blue-500/10"
+                         : "text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50"
+                     }`}
               >
                 {/* Indicador de conversa ativa */}
                 {conversaAtual === index && (
                   <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
                 )}
 
-                <div className={`p-2 rounded-xl transition-all duration-200 ${conversaAtual === index
-                  ? 'bg-blue-500 text-white shadow-md'
-                  : 'bg-gray-700 group-hover:bg-gray-600 text-gray-400 group-hover:text-white'
-                  }`}>
+                <div
+                  className={`p-2 rounded-xl transition-all duration-200 ${
+                    conversaAtual === index
+                      ? "bg-blue-500 text-white shadow-md"
+                      : "bg-gray-700 group-hover:bg-gray-600 text-gray-400 group-hover:text-white"
+                  }`}
+                >
                   <Icon icon="lucide:message-circle" className="w-4 h-4" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <span className="text-sm font-medium truncate block text-white">
-                    {conversa}
-                  </span>
+                  <span className="text-sm font-medium truncate block text-white">{conversa}</span>
                   <span className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
                     <Icon icon="lucide:clock" className="w-3 h-3" />
-                    Just now
+                    Criado agora
                   </span>
-                </div> 
-                    
+                </div>
+
                 {/* Menu de opções */}
-                <div className="opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1">
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleExcluir(index);
-                    }}
-                    className="p-1.5 rounded-lg hover:bg-red-600/50 transition-colors"
-                  >
-                    <Icon icon="lucide:trash-2" className="w-3 h-3 text-gray-400 hover:text-red-400" />
-                  </button>
-                  <button className="p-1.5 rounded-lg hover:bg-gray-600/50 transition-colors">
-                    <Icon icon="lucide:more-horizontal" className="w-3 h-3 text-gray-400 hover:text-white" />
-                  </button>
+                <div
+                  className="opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ChatDropdown onExcluir={onExcluirConversa} conversaIndex={index}>
+                    <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-700/50 transition-colors">
+                      <Icon icon="lucide:more-horizontal" className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </ChatDropdown>
                 </div>
               </button>
             ))}
@@ -170,36 +131,6 @@ export default function SidebarDrawer({
         </Scrollbar>
       </div>
 
-      {/* Modal de Confirmação */}
-      {showConfirmacao && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 max-w-sm mx-4 ">
-            <h3 className="flex intems-center justify-center z-50 text-lg font-semibold text-white mb-2">
-              Confirmar Exclusão
-            </h3>
-            <p className="text-gray-300 mb-4">
-              {acao === "atual" 
-                ? "Tem certeza que deseja excluir esta conversa ?" 
-                : "Tem certeza que deseja excluir TODAS as conversas?"}
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={cancelarExclusao}
-                className="flex-1 p-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={confirmarExclusao}
-                className="flex-1 p-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors"
-              >
-                Excluir
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Footer com bordas arredondadas na base */}
       <div className="p-4 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">
         {/* User profile */}
@@ -209,13 +140,13 @@ export default function SidebarDrawer({
               U
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">User Account</p>
-              <p className="text-xs text-gray-400 truncate">Free Plan</p>
+              <p className="text-sm font-medium text-white truncate">Baiano</p>
+              <p className="text-xs text-gray-400 truncate">Plano Gratis</p>
             </div>
             <Icon icon="lucide:chevron-down" className="w-4 h-4 text-gray-400" />
           </div>
         </UserDropdown>
       </div>
     </div>
-  );
+  )
 }
