@@ -1,9 +1,6 @@
-"use client"
-
 import { Icon } from "@iconify/react"
 import UserDropdown from "./UserDrodown"
 import Scrollbar from "./ScrollBar"
-import { useState } from "react"
 import ChatDropdown from "./ChatDropdown"
 
 interface SidebarDrawerProps {

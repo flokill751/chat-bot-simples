@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import SidebarDrawer from "./componets/siderBar/SidebarDrawer"; // Caminho corrigido
+import { useState, useRef, useEffect } from "react";// Caminho corrigido
 import { enviarMensagem } from "./api";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react";
 import { Particles } from "./componets/background/Pontinho";
+import SidebarDrawer from "./componets/siderBar/SidebarDrawer";
+//import { Vortex } from "./componets/background/vortex"; 
+
 
 interface Mensagem {
   id: string;
@@ -169,23 +171,30 @@ export default function App() {
   return (
     <div className="flex h-screen font-sans bg-gray-900 text-white p-2">
       {/* Sidebar */}
-      <SidebarDrawer
+         <SidebarDrawer
         conversasList={conversasList}
         onNovoChat={handleNovoChat}
         onSelecionarConversa={handleSelecionarConversa}
-        conversaAtual={conversaAtual}
-      />
+        conversaAtual={conversaAtual}/>
+    
 
       <main className="flex-1 flex flex-col bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 mx-2 relative overflow-hidden">
-        {/* Fundo com partículas */}
-        <Particles
+        {/* Background papai */}
+
+
+        {/* Opção -1 Vortex */}
+        {/* <Vortex className="absolute inset-0 z-0" /> */}
+     
+
+        {/* Opção -2 Particulas */}
+       <Particles
           quantity={350}
           color="#c57676ff"
           size={1}
           staticity={45}
           ease={80}
           className="opacity-85"
-        />
+        />  
 
         {/* Mensagens */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 relative z-10">
