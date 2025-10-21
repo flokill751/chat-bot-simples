@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react"
 import UserDropdown from "./UserDrodown"
 import Scrollbar from "./ScrollBar"
 import ChatDropdown from "./ChatDropdown"
-import {User} from "@heroui/react";
 
 interface SidebarDrawerProps {
   conversasList: string[]
@@ -26,7 +25,7 @@ export default function SidebarDrawer({
       {/* Header moderno com bordas arredondadas no topo */}
       <div className="p-6 border-b border-gray-700 bg-gradient-to-r from-gray-900 to-gray-800 rounded-t-2xl">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-800 flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
             <Icon icon="lucide:bot" className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -42,7 +41,7 @@ export default function SidebarDrawer({
       <div className="p-4">
         <button
           className="flex items-center gap-3 w-full p-4 rounded-xl text-left transition-all duration-200 
-                     bg-gradient-to-r from-blue-700 to-purple-800 hover:from-blue-500 hover:to-purple-500 
+                     bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 
                      text-white shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] 
                      border border-blue-400/20 group"
           onClick={onNovoChat}
@@ -71,11 +70,11 @@ export default function SidebarDrawer({
               <button
                 key={index}
                 onClick={() => onSelecionarConversa?.(index)}
-                className={`h-15 flex items-center gap-3 w-full p-4 rounded-xl text-left transition-all duration-200 group relative
+                className={`flex items-center gap-3 w-full p-3 rounded-xl text-left transition-all duration-200 group relative
                      ${
                        conversaAtual === index
-                         ? "h-14 bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-black-500/10"
-                         : "h-14 text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50"
+                         ? "bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-blue-500/10"
+                         : "text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50"
                      }`}
               >
                 {/* Indicador de conversa ativa */}
@@ -132,24 +131,18 @@ export default function SidebarDrawer({
       {/* Footer com bordas arredondadas na base */}
       <div className="p-4 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">
         {/* User profile */}
-       
-
-         <UserDropdown>
+        <UserDropdown>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-800/80 border border-gray-700">
-            <div className="flex items-center justify-center">
-  <img
-    src="https://wallpapers-clan.com/wp-content/uploads/2023/02/wizard-art-wallpaper.jpg"
-    alt="Navegador"
-    className="w-8 h-8 rounded-full object-cover bg-gradient-to-br from-green-500 to-blue-500"
-  />
-</div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-xs font-bold text-white">
+              U
+            </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">Baiano</p>
-              <p className="text-xs text-gray-400 truncate">Jesus existe</p>
+              <p className="text-xs text-gray-400 truncate">Plano Gratis</p>
             </div>
             <Icon icon="lucide:chevron-down" className="w-4 h-4 text-gray-400" />
           </div>
-        </UserDropdown> 
+        </UserDropdown>
       </div>
     </div>
   )

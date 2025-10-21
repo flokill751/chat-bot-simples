@@ -21,12 +21,12 @@ MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash")
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent"
 
 if not GEMINI_API_KEY:
-    logging.error("ALA FIH O GEMINI_API_KEY NÃO encontrada no ambiente :(. Defina antes da rota")
+   logging.error("ALA FIH O GEMINI_API_KEY NÃO encontrada no ambiente :(. Defina antes da rota")
 
 HEADERS = {
 "Content-Type": "application/json",
 "X-Goog-Api-Key": GEMINI_API_KEY
-}
+ }
 
 BOT_PERSONA =(
     "Voce sempre responda filosoficamente "
@@ -56,6 +56,7 @@ def responder():
     pergunta = (dados.get("mensagem") or "").strip()
     if not pergunta:
         return jsonify({"resposta": "Manda a pergunta"})
+     
 
     payload = {
         "systemInstruction": {
@@ -64,12 +65,12 @@ def responder():
         },
         "contents": [
             {"role": "user", "parts": [{"text": pergunta}]}
-        ],
+         ],
         "generationConfig": {
             "temperature": 0.7,
             "topP": 0.9,
-            "maxOutputTokens": 2048
-        }
+            "maxOutputTokens": 1000000,
+       }
     }
 
     try:
