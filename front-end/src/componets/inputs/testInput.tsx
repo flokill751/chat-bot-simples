@@ -4,7 +4,7 @@ import { PlaceholdersAndVanishInput } from "../../components/ui/placeholders-and
 import type React from "react"
 import { useState } from "react"
 import { enviarMensagem } from "../../api"
-import { button } from "@heroui/react"
+
 
 interface Mensagem {
   id: string
