@@ -6,6 +6,8 @@ import { useState } from "react"
 import { enviarMensagem } from "../../api"
 
 
+
+
 interface Mensagem {
   id: string
   autor: string
@@ -28,7 +30,7 @@ interface TsteinputProps {
 
 export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: TsteinputProps) {
   const [mensagem, setMensagem] = useState("")
-  const [carregando, setCarregando] = useState(false)
+
 
   const placeholders = [
     "Permita-me dirimir qualquer questão exposta.",
@@ -40,20 +42,15 @@ export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: 
 
   const gerarId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
-  const handleEnviar = async () => {
-    if (!mensagem.trim()) return
-    setCarregando(true)
-    
+  const handleEnviar = async (textoMensagem: string) => {
+    if (!textoMensagem.trim()) return;
 
     const novaMensagem: Mensagem = {
       id: gerarId(),
       autor: "Você",
-      texto: mensagem,
+      texto: textoMensagem,
       timestamp: new Date().toISOString(),
-      
-    }
-
-
+    };
 
     setTodasConversas((prev) => {
       const novasConversas = [...prev]
@@ -74,10 +71,10 @@ export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: 
       return novasConversas
     })
 
-    setMensagem("")
+    setMensagem("");
 
     try {
-      const resposta = await enviarMensagem(mensagem)
+      const resposta = await enviarMensagem(textoMensagem)
       const respostaAI: Mensagem = {
         id: gerarId(),
         autor: "Kimera",
@@ -109,37 +106,22 @@ export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: 
           mensagens: [...novasConversas[conversaAtual].mensagens, mensagemErro],
           ultimoAcesso: new Date().toISOString(),
         }
-        return novasConversas 
+        return novasConversas;
       })
-    } finally{
-      setCarregando(false)
     }
-  
-
   }
 
-  return (
-    <div className="flex flex-1 rounded-full border-white/20 overflow-hidden">
-      <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        value={mensagem}
-        onChange={(e) => setMensagem(e.target.value)}
-        onSend={handleEnviar}
-      />
-     <button
-        type="button"
-        className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center disabled:opacity-60"
-        disabled={carregando}
-        onClick={handleEnviar}
-      >
-        {carregando && (
-          <svg className="mr-3 size-5 animate-spin" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="4" fill="none" />
-            <path d="M12 2a10 10 0 0 1 10 10" stroke="white" strokeWidth="4" fill="none" />
-          </svg>
-        )}
-        {carregando? "Processing…" : "Enviar"}
-      </button>
-    </div>
-  )
+    return (
+      <div className="flex flex-1 rounded-full border-white/20 overflow-hidden">
+        <PlaceholdersAndVanishInput
+          placeholders={placeholders}
+          value={mensagem}
+          onChange={(e) => setMensagem(e.target.value)}
+          onSend={handleEnviar}
+        />
+    
+      </div>
+    )
+  
 }
+

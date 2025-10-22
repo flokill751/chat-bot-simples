@@ -132,27 +132,37 @@ export default function App() {
         {/* Mensagens */}
         
         <Particles quantity={350} color="#c57676ff" size={1} staticity={45} ease={80} className="opacity-85" />
+        
         <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 relative z-10">
-          {conversa.map((msg) => (
-            <div
-              key={msg.id}
-              className={`max-w-[70%] p-4 rounded-2xl break-words shadow-md flex ${
-                msg.autor === "Você" ? "bg-gray-700 self-end ml-auto" : "bg-gray-800 self-start mr-auto"
-              }`}
-            >
-              {msg.autor !== "Você" && (
-                <div className="w-8 h-8 rounded-full bg-black-500 flex items-center justify-center text-sm font-bold shrink-0">
-                  K
-                </div>
-              )}
-              <div className={msg.autor !== "Você" ? "ml-2" : ""}>
-                <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
-                {msg.texto}
-              </div>
-            </div>
-          ))}
-          <div ref={mensagensEndRef} />
+  {conversa.map((msg) => (
+    <div
+      key={msg.id}
+      className={`flex items-start ${
+        msg.autor === "Você" ? "justify-end" : "justify-start"
+      }`}
+    >
+      {msg.autor !== "Você" && (
+        <div className="w-8 h-8 rounded-full bg-b-500 flex items-center justify-center text-sm font-bold shrink-0">
+          K
         </div>
+      )}
+
+      <div
+        className={`p-4 rounded-2xl break-words shadow-md w-fit max-w-[45%] ${
+          msg.autor === "Você"
+            ? "bg-gray-700 ml-2 max-w-[45%]"
+            : "bg-gray-800 ml-2"
+        }`}
+      >
+        <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
+        {msg.texto}
+      </div>
+    </div>
+  ))}
+
+  <div ref={mensagensEndRef} />
+</div>
+
 
         {/* Input */}
         <div className="p-4 border-t border-white/10 flex bg-gray-900/50 backdrop-blur-sm relative z-10">
@@ -160,6 +170,7 @@ export default function App() {
             conversaAtual={conversaAtual}
             todasConversas={todasConversas}
             setTodasConversas={setTodasConversas}
+            
           />
         </div>
       </main>

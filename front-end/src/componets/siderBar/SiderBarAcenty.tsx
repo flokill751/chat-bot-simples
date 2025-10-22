@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { cn } from "../../lib/utils";
-import Scrollbar from "./ScrollBar";
+import Scrollbar from "../scrollBar/ScrollBar";
 import ChatDropdown from "./ChatDropdown";
 import { Icon } from "@iconify/react"
 

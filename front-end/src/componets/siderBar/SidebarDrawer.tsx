@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import UserDropdown from "./UserDrodown"
-import Scrollbar from "./ScrollBar"
+import Scrollbar from "../scrollBar/ScrollBar"
 import ChatDropdown from "./ChatDropdown"
 import {User} from "@heroui/react";
 
