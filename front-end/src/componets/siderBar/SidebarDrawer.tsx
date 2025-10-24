@@ -1,23 +1,28 @@
 import { Icon } from "@iconify/react"
-import UserDropdown from "./UserDrodown"
+import UserDropdown from "../inputs/UserDrodown"
 import Scrollbar from "../scrollBar/ScrollBar"
-import ChatDropdown from "./ChatDropdown"
+import ChatDropdown from "../inputs/ChatDropdown"
 import {User} from "@heroui/react";
+import type { Conversa, Mensagem } from '../types/types'
+
+
 
 interface SidebarDrawerProps {
-  conversasList: string[]
+  conversasList: Conversa[]
   onNovoChat: () => void
-  onSelecionarConversa?: (index: number) => void
+  onSelecionarConversas?: (index: number) => void 
   conversaAtual?: number
-  onExcluirConversa?: (index: number) => void
+  onExcluirConversas?: (index: number) => void
+
+
 }
 
 export default function SidebarDrawer({
   conversasList,
   onNovoChat,
-  onSelecionarConversa,
+  onSelecionarConversas,
   conversaAtual,
-  onExcluirConversa,
+  onExcluirConversas,
 }: SidebarDrawerProps) {
 
 
@@ -67,10 +72,10 @@ export default function SidebarDrawer({
         {/* Área de scroll usando o componente */}
         <Scrollbar className="p-2">
           <div className="space-y-1">
-            {conversasList.map((conversa, index) => (
+            {conversasList.map((conversas, index) => (
               <button
                 key={index}
-                onClick={() => onSelecionarConversa?.(index)}
+                onClick={() => onSelecionarConversas?.(index)}
                 className={`h-15 flex items-center gap-3 w-full p-4 rounded-xl text-left transition-all duration-200 group relative
                      ${
                        conversaAtual === index
@@ -94,7 +99,7 @@ export default function SidebarDrawer({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <span className="text-sm font-medium truncate block text-white">{conversa}</span>
+                  <span className="text-sm font-medium truncate block text-white">{conversas.mensagens[0]?.texto || conversas.titulo}</span>
                   <span className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
                     <Icon icon="lucide:clock" className="w-3 h-3" />
                     Criado agora
@@ -106,7 +111,7 @@ export default function SidebarDrawer({
                   className="opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <ChatDropdown onExcluir={onExcluirConversa} conversaIndex={index}>
+                  <ChatDropdown onExcluir={onExcluirConversas} conversaIndex={index}>
                     <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-700/50 transition-colors">
                       <Icon icon="lucide:more-horizontal" className="w-4 h-4 text-gray-400" />
                     </div>

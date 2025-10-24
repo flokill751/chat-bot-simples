@@ -8,9 +8,8 @@ import {
   IconUserBolt,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import { cn } from "../../lib/utils";
 import Scrollbar from "../scrollBar/ScrollBar";
-import ChatDropdown from "./ChatDropdown";
+import ChatDropdown from "../inputs/ChatDropdown";
 import { Icon } from "@iconify/react"
 
 
