@@ -2,8 +2,7 @@ import { Icon } from "@iconify/react"
 import UserDropdown from "../inputs/UserDrodown"
 import Scrollbar from "../scrollBar/ScrollBar"
 import ChatDropdown from "../inputs/ChatDropdown"
-import {User} from "@heroui/react";
-import type { Conversa, Mensagem } from '../types/types'
+import type { Conversa, } from '../types/types'
 
 
 

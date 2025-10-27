@@ -46,10 +46,18 @@ export function PlaceholdersAndVanishInput({
 
     const calculatedRows = Math.floor(scrollHeight / lineHeight);
     const newRows = Math.min(Math.max(1, calculatedRows), maxRows);
+    
 
     textarea.rows = newRows;
     return newRows;
   }, [maxRows]);
+
+
+  useEffect(() => {
+    const newRows = calculateRows (value || "")
+    setRows(newRows ?? 1)
+  }, [value,calculateRows]
+)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (animating) return;
@@ -58,9 +66,9 @@ export function PlaceholdersAndVanishInput({
     setValue(newValue);
 
     const newRows = calculateRows(newValue);
-    setRows(newRows);
-
-    onChange && onChange(e);
+    setRows(newRows ?? 1);
+    onChange?.(e)
+    
   };
 
 
@@ -254,7 +262,7 @@ const vanishAndSubmit = () => {
     e.preventDefault();
     if (!value.trim() || animating) return;
     vanishAndSubmit();
-    onSend && onSend(value);
+
   };
 
   return (

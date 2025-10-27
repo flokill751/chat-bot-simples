@@ -5,10 +5,11 @@ import { useTheme } from "next-themes"
 import { Particles } from "./componets/background/Pontinho"
 import { Tsteinput } from "./componets/inputs/testInput"
 import SidebarDrawer from "./componets/siderBar/SidebarDrawer"
-import type { Conversa, Mensagem } from "./componets/types/types"
+import type { Conversa, } from "./componets/types/types"
 
 export default function App() {
   const [conversaAtual, setConversaAtual] = useState<number>(0)
+  const [carregando, setcarregando] = useState(false)
 
   const [todasConversas, setTodasConversas] = useState<Conversa[]>([
     {
@@ -32,7 +33,7 @@ export default function App() {
 
   useEffect(() => {
     mensagensEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [conversa])
+  }, [conversa, carregando])
 
   useEffect(() => {
     const conversasSalvas = localStorage.getItem("conversas")
@@ -109,7 +110,7 @@ export default function App() {
               )}
 
               <div
-                className={`p-4 rounded-2xl break-words shadow-md w-fit max-w-[45%] ${msg.autor === "Você" ? "bg-gray-700 ml-2 max-w-[45%]" : "bg-gray-800 ml-2"
+                className={`p-4 rounded-2xl break-words shadow-md w-fit max-w-[45%] ${msg.autor === "Você" ? "bg-gray-700 ml-2" : "bg-gray-800 ml-2"
                   }`}
               >
                 <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
@@ -117,6 +118,16 @@ export default function App() {
               </div>
             </div>
           ))}
+
+          {carregando && (
+            <div className="flex items-start justify-start">
+              <div className="w-8 h-8 rounded-full bg-b-500 flex items-center justify-center text-sm font-bold shrink-0">K</div>
+              <div className="p-4 rounded-2xl shadow-md bg-gray-800 ml-2 max-w-[45%]">
+                <strong className="block mb-1 text-sm opacity-80">Kimera</strong>
+                <CarregandoDots text="Pensando" />
+              </div>
+            </div>
+          )}
 
           <div ref={mensagensEndRef} />
         </div>
@@ -126,9 +137,24 @@ export default function App() {
             conversaAtual={conversaAtual}
             todasConversas={todasConversas}
             setTodasConversas={setTodasConversas}
+            setcarregando={setcarregando}
           />
         </div>
       </main>
+
     </div>
   )
+
+  function CarregandoDots({ text = "Pensando" }: { text?: string }) {
+    return (
+      <div className="inline-flex items-center gap-2">
+        <span className="opacity-80">{text}</span>
+        <span className="flex gap-1" aria-label="digitando">
+          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:-0.3s]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:-0.15s]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce" />
+        </span>
+      </div>
+    );
+  }
 }

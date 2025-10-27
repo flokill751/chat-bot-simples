@@ -11,4 +11,4 @@ export interface Conversa {
   mensagens: Mensagem[]
   dataCriacao: string
   ultimoAcesso?: string
-}
+  }

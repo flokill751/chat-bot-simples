@@ -2,15 +2,17 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import { createPortal } from "react-dom"
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react"
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, } from "@heroui/react"
 import { Icon } from "@iconify/react"
 
 interface ChatDropdownProps {
   children?: React.ReactNode
   onExcluir?: (index: number) => void
   conversaIndex?: number
+  onFixar?: (index: number) => void
+  onLimpar?: (index:number) => void
 }
 
 export default function ChatDropdown({ children, onExcluir, conversaIndex }: ChatDropdownProps) {
@@ -18,14 +20,25 @@ export default function ChatDropdown({ children, onExcluir, conversaIndex }: Cha
   const [showConfirmacao, setShowConfirmacao] = useState(false)
   const [acao, setAcao] = useState<"excluir" | null>(null)
   const [estaConversa, setEstaConversa] = useState<number | null>(null)
+  const [, setFixar] = useState<number | null>(null)
+  // const [limpar, setlimpar] = useState<number | null>(null)>
 
-  const abrirModal = (tipo: "excluir") => {
+
+  const abrirModal = (tipo: "excluir",) => {
     setIsOpen(false)
     setTimeout(() => {
       setAcao(tipo)
       setShowConfirmacao(true)
       setEstaConversa(conversaIndex ?? null)
+      setFixar(conversaIndex ?? null)
+      // setLimpar (conversaIndex?? null)
     }, 50)
+  }
+
+  const fixarDireto = () => {
+    setIsOpen(false)
+    const idx = conversaIndex ?? null;
+    if (idx === null) return
   }
 
   const cancelarExclusao = () => {
@@ -49,7 +62,7 @@ export default function ChatDropdown({ children, onExcluir, conversaIndex }: Cha
         placement="top-start"
         trigger="press"
         classNames={{
-          content: "bg-gray-800 border border-gray-700 rounded-xl shadow-xl",
+          content: "bg-gradient-to-br from-gray-900 to-blue-950 border border-gray-900 rounded-xl shadow-xl",
         }}
       >
         <DropdownTrigger>
@@ -61,16 +74,64 @@ export default function ChatDropdown({ children, onExcluir, conversaIndex }: Cha
           variant="flat"
           className="p-2"
           onAction={(key) => {
-            if (key === "delete") abrirModal("excluir")
-          }}
+
+            if (key === "delete"){
+              
+              abrirModal("excluir")
+              setShowConfirmacao(true)
+              setFixar(conversaIndex ?? null)
+              return
+
+            }if (key === "pin"){
+              if (conversaIndex != null)
+                 fixarDireto?.()
+              return
+
+            }if (key === "brush-cleaning"){
+              if (conversaIndex != null)
+           
+            return
+            }if (key ===" pencil-line"){
+              if (conversaIndex != null)
+              return
+            }
+            setIsOpen(false)
+            return
+
+            
+          }
+  
+        }
+
           itemClasses={{
             base: "px-3 py-2 rounded-lg data-[hover=true]:bg-gray-700/50 transition-all duration-200",
             title: "text-sm text-white",
             description: "text-xs text-gray-400",
             shortcut: "text-xs text-gray-500",
           }}
-        >
-          <DropdownItem
+        > 
+
+            <DropdownItem 
+            key="pencil-line"
+            startContent={<Icon icon="lucide:pencil-line" className="w-4 h-4 text-yellow-300 mr-2"/>}
+            description="Renomear"
+            >Renomear esta conversa
+            </DropdownItem>
+
+            <DropdownItem
+            key="brush-cleaning"
+            startContent={<Icon icon="lucide:brush-cleaning" className="w-4 h-4 text-blue-500 mr-2"/>}
+            description="Limpar conversa"
+            >Limpar esta conversa</DropdownItem>
+
+            <DropdownItem 
+            key= "pin"
+            startContent={<Icon icon="lucide:pin" className="w-4 h-4 text-green-400 mr-2 "  />}
+            description="Fixar conversa"
+            
+          > Fixar esta conversa </DropdownItem>
+          
+            <DropdownItem
             key="delete"
             startContent={<Icon icon="lucide:trash-2" className="w-4 h-4 text-red-400 mr-2" />}
             description="Excluir conversa"

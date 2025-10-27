@@ -33,10 +33,10 @@ export default function UserDropdown({ children }: UserDropdownProps) {
         <DropdownItem 
           key="profile"
           startContent={<Icon icon="lucide:user" className="w-4 h-4 text-blue-400" />}
-          description="View your profile"
+          description="Veja seu Perfil"
           className="mb-1"
         >
-          Profile
+          Perfil
         </DropdownItem>
         
         <DropdownItem 
@@ -45,16 +45,9 @@ export default function UserDropdown({ children }: UserDropdownProps) {
           description="Customize preferences"
           className="mb-1"
         >
-          Settings
+          Configuração
         </DropdownItem>
-        
-        <DropdownItem 
-          key="billing"
-          startContent={<Icon icon="lucide:credit-card" className="w-4 h-4 text-green-400" />}
-          description="Manage subscription"
-        >
-          Billing & Plans
-        </DropdownItem>
+
         
         {/*
         <DropdownItem 
@@ -68,10 +61,10 @@ export default function UserDropdown({ children }: UserDropdownProps) {
         <DropdownItem 
           key="help"
           startContent={<Icon icon="lucide:help-circle" className="w-4 h-4 text-yellow-400" />}
-          description="Get support"
+          description="Suporte"
           className="mb-1"
         >
-          Help & Support
+          Ajuda & Suporte
         </DropdownItem>
         
         <DropdownItem 
@@ -79,9 +72,9 @@ export default function UserDropdown({ children }: UserDropdownProps) {
           className="text-danger hover:bg-red-500/20 mt-1"
           color="danger"
           startContent={<Icon icon="lucide:log-out" className="w-4 h-4 "color="#dd7a33ff" />}
-          description="Sign out of your account"
+          description="Sair da sua conta"
         >
-          Log Out
+          Logout
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

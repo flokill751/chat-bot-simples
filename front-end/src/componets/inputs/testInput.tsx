@@ -26,9 +26,10 @@ interface TsteinputProps {
   conversaAtual: number
   todasConversas: Conversa[]
   setTodasConversas: React.Dispatch<React.SetStateAction<Conversa[]>>
+  setcarregando: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: TsteinputProps) {
+export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: TsteinputProps) {
   const [mensagem, setMensagem] = useState("")
 
 
@@ -43,7 +44,11 @@ export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: 
   const gerarId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
   const handleEnviar = async (textoMensagem: string) => {
+
+
     if (!textoMensagem.trim()) return;
+
+    setcarregando(true)
 
     const novaMensagem: Mensagem = {
       id: gerarId(),
@@ -108,20 +113,22 @@ export function Tsteinput({ conversaAtual, todasConversas, setTodasConversas }: 
         }
         return novasConversas;
       })
+    } finally {
+      setcarregando(false)
     }
   }
 
-    return (
-      <div className="flex flex-1 rounded-full border-white/20 overflow-hidden">
-        <PlaceholdersAndVanishInput
-          placeholders={placeholders}
-          value={mensagem}
-          onChange={(e) => setMensagem(e.target.value)}
-          onSend={handleEnviar}
-        />
-    
-      </div>
-    )
-  
+  return (
+    <div className="flex flex-1 rounded-full border-white/20 overflow-hidden">
+      <PlaceholdersAndVanishInput
+        placeholders={placeholders}
+        value={mensagem}
+        onChange={(e) => setMensagem(e.target.value)}
+        onSend={handleEnviar}
+      />
+
+    </div>
+  )
+
 }
 
