@@ -9,7 +9,7 @@ import type { Conversa, } from '../types/types'
 interface SidebarDrawerProps {
   conversasList: Conversa[]
   onNovoChat: () => void
-  onSelecionarConversas?: (index: number) => void 
+  onSelecionarConversas?: (index: number) => void
   conversaAtual?: number
   onExcluirConversas?: (index: number) => void
 
@@ -76,11 +76,10 @@ export default function SidebarDrawer({
                 key={index}
                 onClick={() => onSelecionarConversas?.(index)}
                 className={`h-15 flex items-center gap-3 w-full p-4 rounded-xl text-left transition-all duration-200 group relative
-                     ${
-                       conversaAtual === index
-                         ? "h-14 bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-black-500/10"
-                         : "h-14 text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50"
-                     }`}
+                     ${conversaAtual === index
+                    ? "h-14 bg-blue-500/20 border border-blue-500/30 text-white shadow-lg shadow-black-500/10"
+                    : "h-14 text-gray-300 hover:bg-gray-800/80 hover:text-white border border-transparent hover:border-gray-600/50"
+                  }`}
               >
                 {/* Indicador de conversa ativa */}
                 {conversaAtual === index && (
@@ -88,11 +87,10 @@ export default function SidebarDrawer({
                 )}
 
                 <div
-                  className={`p-2 rounded-xl transition-all duration-200 ${
-                    conversaAtual === index
+                  className={`p-2 rounded-xl transition-all duration-200 ${conversaAtual === index
                       ? "bg-blue-500 text-white shadow-md"
                       : "bg-gray-700 group-hover:bg-gray-600 text-gray-400 group-hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Icon icon="lucide:message-circle" className="w-4 h-4" />
                 </div>
@@ -136,24 +134,24 @@ export default function SidebarDrawer({
       {/* Footer com bordas arredondadas na base */}
       <div className="p-4 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">
         {/* User profile */}
-       
 
-         <UserDropdown>
+
+        <UserDropdown>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-800/80 border border-gray-700">
             <div className="flex items-center justify-center">
-  <img
-    src="https://wallpapers-clan.com/wp-content/uploads/2023/02/wizard-art-wallpaper.jpg"
-    alt="Navegador"
-    className="w-8 h-8 rounded-full object-cover bg-gradient-to-br from-green-500 to-blue-500"
-  />
-</div>
+              <img
+                src="https://wallpapers-clan.com/wp-content/uploads/2023/02/wizard-art-wallpaper.jpg"
+                alt="Navegador"
+                className="w-8 h-8 rounded-full object-cover bg-gradient-to-br from-green-500 to-blue-500"
+              />
+            </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">Baiano</p>
               <p className="text-xs text-gray-400 truncate">Jesus existe</p>
             </div>
             <Icon icon="lucide:chevron-down" className="w-4 h-4 text-gray-400" />
           </div>
-        </UserDropdown> 
+        </UserDropdown>
       </div>
     </div>
   )

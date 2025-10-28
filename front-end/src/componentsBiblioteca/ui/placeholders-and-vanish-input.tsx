@@ -3,7 +3,9 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
-import Scrollbar from "../../componets/scrollBar/ScrollBar";
+import Scrollbar from "../../components/scrollBar/ScrollBar";
+import { Button, Divider } from "@heroui/react";
+import { Icon } from "@iconify/react";
 
 export function PlaceholdersAndVanishInput({
   placeholders,
@@ -46,7 +48,7 @@ export function PlaceholdersAndVanishInput({
 
     const calculatedRows = Math.floor(scrollHeight / lineHeight);
     const newRows = Math.min(Math.max(1, calculatedRows), maxRows);
-    
+
 
     textarea.rows = newRows;
     return newRows;
@@ -54,10 +56,10 @@ export function PlaceholdersAndVanishInput({
 
 
   useEffect(() => {
-    const newRows = calculateRows (value || "")
+    const newRows = calculateRows(value || "")
     setRows(newRows ?? 1)
-  }, [value,calculateRows]
-)
+  }, [value, calculateRows]
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (animating) return;
@@ -68,7 +70,7 @@ export function PlaceholdersAndVanishInput({
     const newRows = calculateRows(newValue);
     setRows(newRows ?? 1);
     onChange?.(e)
-    
+
   };
 
 
@@ -99,71 +101,71 @@ export function PlaceholdersAndVanishInput({
     };
   }, [placeholders]);
 
- const draw = useCallback(() => {
-  if (!textareaRef.current) return;
-  const canvas = canvasRef.current;
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  const draw = useCallback(() => {
+    if (!textareaRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-  const computedStyles = getComputedStyle(textareaRef.current);
-  const fontSize = parseFloat(computedStyles.getPropertyValue("font-size"));
-  const fontFamily = computedStyles.fontFamily;
+    const computedStyles = getComputedStyle(textareaRef.current);
+    const fontSize = parseFloat(computedStyles.getPropertyValue("font-size"));
+    const fontFamily = computedStyles.fontFamily;
 
-  const lines = value.split('\n');
-  const lineHeight = fontSize * 2 * 1.2;
+    const lines = value.split('\n');
+    const lineHeight = fontSize * 2 * 1.2;
 
- 
-  ctx.font = `${fontSize * 2}px ${fontFamily}`;
-  const maxLineWidth = Math.max(...lines.map(line => ctx.measureText(line).width));
 
-  canvas.width = Math.ceil(maxLineWidth) + 32; 
-  canvas.height = Math.ceil(lineHeight * lines.length) + 40; 
+    ctx.font = `${fontSize * 2}px ${fontFamily}`;
+    const maxLineWidth = Math.max(...lines.map(line => ctx.measureText(line).width));
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = Math.ceil(maxLineWidth) + 32;
+    canvas.height = Math.ceil(lineHeight * lines.length) + 40;
 
-  ctx.font = `${fontSize * 2}px ${fontFamily}`;
-  ctx.fillStyle = "#971E06";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  lines.forEach((line, index) => {
-    ctx.fillText(line, 16, 40 + index * lineHeight);
-  });
+    ctx.font = `${fontSize * 2}px ${fontFamily}`;
+    ctx.fillStyle = "#971E06";
 
- 
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const pixelData = imageData.data;
-  const newData: any[] = [];
+    lines.forEach((line, index) => {
+      ctx.fillText(line, 16, 40 + index * lineHeight);
+    });
 
-  for (let t = 0; t < canvas.height; t++) {
-    let i = 4 * t * canvas.width;
-    for (let n = 0; n < canvas.width; n++) {
-      let e = i + 4 * n;
-      if (
-        pixelData[e] !== 0 &&
-        pixelData[e + 1] !== 0 &&
-        pixelData[e + 2] !== 0
-      ) {
-        newData.push({
-          x: n,
-          y: t,
-          color: [
-            pixelData[e],
-            pixelData[e + 1],
-            pixelData[e + 2],
-            pixelData[e + 3],
-          ],
-        });
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixelData = imageData.data;
+    const newData: any[] = [];
+
+    for (let t = 0; t < canvas.height; t++) {
+      let i = 4 * t * canvas.width;
+      for (let n = 0; n < canvas.width; n++) {
+        let e = i + 4 * n;
+        if (
+          pixelData[e] !== 0 &&
+          pixelData[e + 1] !== 0 &&
+          pixelData[e + 2] !== 0
+        ) {
+          newData.push({
+            x: n,
+            y: t,
+            color: [
+              pixelData[e],
+              pixelData[e + 1],
+              pixelData[e + 2],
+              pixelData[e + 3],
+            ],
+          });
+        }
       }
     }
-  }
 
-  newDataRef.current = newData.map(({ x, y, color }) => ({
-    x,
-    y,
-    r: 1,
-    color: `rgba(${color[0]}, ${color[0]}, ${color[0]}, ${color[0]})`,
-  }));
-}, [value]);
+    newDataRef.current = newData.map(({ x, y, color }) => ({
+      x,
+      y,
+      r: 1,
+      color: `rgba(${color[0]}, ${color[0]}, ${color[0]}, ${color[0]})`,
+    }));
+  }, [value]);
 
 
 
@@ -223,35 +225,35 @@ export function PlaceholdersAndVanishInput({
   };
 
 
-const vanishAndSubmit = () => {
-  if (!value.trim()) return;
+  const vanishAndSubmit = () => {
+    if (!value.trim()) return;
 
-  setAnimating(true);
-  draw();
+    setAnimating(true);
+    draw();
 
-  onSend(value);
+    onSend(value);
 
-  const ctx = canvasRef.current?.getContext("2d");
-  if (!ctx) return;
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
 
-  const maxChars = 63;
-  const textToMeasure = value.slice(0, maxChars);
+    const maxChars = 63;
+    const textToMeasure = value.slice(0, maxChars);
 
-  const width63 = ctx.measureText(textToMeasure).width;
+    const width63 = ctx.measureText(textToMeasure).width;
 
-  // Ajuste para margem esquerda do canvas (se houver)
-  const marginLeft = 16;
-  const limitX = width63 + marginLeft;
+    // Ajuste para margem esquerda do canvas (se houver)
+    const marginLeft = 16;
+    const limitX = width63 + marginLeft;
 
-  newDataRef.current = newDataRef.current.filter(pixel => pixel.x <= limitX);
+    newDataRef.current = newDataRef.current.filter(pixel => pixel.x <= limitX);
 
-  const maxX = newDataRef.current.reduce(
-    (prev, current) => (current.x > prev ? current.x : prev),
-    0
-  );
+    const maxX = newDataRef.current.reduce(
+      (prev, current) => (current.x > prev ? current.x : prev),
+      0
+    );
 
-  animate(maxX);
-};
+    animate(maxX);
+  };
 
 
 
@@ -300,7 +302,7 @@ const vanishAndSubmit = () => {
             "[&::-webkit-scrollbar-thumb]:rounded-full",
             " [&::-webkit-scrollbar-thumb]:hover:bg-gray-500",
             " [&::-webkit-scrollbar-thumb]:active:bg-gray-400"
-            
+
 
           )}
           style={{
@@ -311,80 +313,87 @@ const vanishAndSubmit = () => {
 
 
 
-        {/* Contador de caracteres
+        <div className="p-6 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">
+          {/* Contador de caracteres
        {maxLength && (
         <div className="absolute bottom-2 right-12 z-50 text-xs text-gray-400">
           {value.length}/{maxLength}
         </div>
       )} */}
+          
+          
+          <Icon icon="lucide:pin" className="w-5 h-5 text-blue-600 mr-2 "  />
 
-        <button
-          disabled={!value.trim() || animating}
-          type="submit"
-          className="absolute right-3 bottom-2 z-50 h-8 w-8 rounded-full disabled:bg-indigo-600 bg-blue-600 dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
-        >
 
-          <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-gray-300 h-4 w-4"
+          <button
+            disabled={!value.trim() || animating}
+            type="submit"
+            className="absolute right-3 bottom-3 z-50 h-8 w-8 rounded-full disabled:bg-indigo-600 bg-blue-600 dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <motion.path
-              d="M5 12l14 0"
-              initial={{
-                strokeDasharray: "50%",
-                strokeDashoffset: "50%",
-              }}
-              animate={{
-                strokeDashoffset: value ? 0 : "50%",
-              }}
-              transition={{
-                duration: 1,
-                ease: "linear",
-              }}
-            />
-            <path d="M13 18l6 -6" />
-            <path d="M13 6l6 6" />
-          </motion.svg>
-        </button>
+
+            <motion.svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gray-300 h-4 w-4"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <motion.path
+                d="M5 12l14 0"
+                initial={{
+                  strokeDasharray: "50%",
+                  strokeDashoffset: "50%",
+                }}
+                animate={{
+                  strokeDashoffset: value ? 0 : "50%",
+                }}
+                transition={{
+                  duration: 1,
+                  ease: "linear",
+                }}
+              />
+              <path d="M13 18l6 -6" />
+              <path d="M13 6l6 6" />
+            </motion.svg>
+          </button>
+        </div>
       </div>
 
-      <div className="absolute inset-0 flex items-start rounded-2xl pointer-events-none pt-3">
-        <AnimatePresence mode="wait">
-          {!value && (
-            <motion.p
-              initial={{
-                y: 5,
-                opacity: 0,
-              }}
-              key={`current-placeholder-${currentPlaceholder}`}
-              animate={{
-                y: 0,
-                opacity: 1,
-              }}
-              exit={{
-                y: -15,
-                opacity: 0,
-              }}
-              transition={{
-                duration: 0.8,
-                ease: "linear",
-              }}
-              className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-8 text-left w-[calc(100%-2rem)] truncate"
-            >
-              {placeholders[currentPlaceholder]}
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
+
+        <div className="absolute inset-0 flex items-start rounded-2xl pointer-events-none pt-3">
+          <AnimatePresence mode="wait">
+            {!value && (
+              <motion.p
+                initial={{
+                  y: 5,
+                  opacity: 0,
+                }}
+                key={`current-placeholder-${currentPlaceholder}`}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -15,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.8,
+                  ease: "linear",
+                }}
+                className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-8 text-left w-[calc(100%-2rem)] truncate"
+              >
+                {placeholders[currentPlaceholder]}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
     </form >
   );
 }

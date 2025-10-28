@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
-import { Particles } from "./componets/background/Pontinho"
-import { Tsteinput } from "./componets/inputs/testInput"
-import SidebarDrawer from "./componets/siderBar/SidebarDrawer"
-import type { Conversa, } from "./componets/types/types"
+import { Particles } from "./components/background/Pontinho"
+import { Tsteinput } from "./components/inputs/testInput"
+import SidebarDrawer from "./components/siderBar/SidebarDrawer"
+import type { Conversa, } from "./components/types/types"
 
 export default function App() {
   const [conversaAtual, setConversaAtual] = useState<number>(0)
@@ -86,6 +86,7 @@ export default function App() {
 
   return (
     <div className="flex h-screen font-sans bg-gray-900 text-white p-2">
+      
       <SidebarDrawer
         conversasList={todasConversas}
         onNovoChat={handleNovoChat}
