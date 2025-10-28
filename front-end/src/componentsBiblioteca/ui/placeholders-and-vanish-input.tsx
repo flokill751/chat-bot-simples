@@ -3,8 +3,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
-import Scrollbar from "../../components/scrollBar/ScrollBar";
-import { Button, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 export function PlaceholdersAndVanishInput({
@@ -22,10 +20,14 @@ export function PlaceholdersAndVanishInput({
   maxRows?: number;
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
-  const [value, setValue] = useState("");
-  const [animating, setAnimating] = useState(false);
+  const [value, setValue] = useState("")
+  const [animating, setAnimating] = useState(false)
   const [rows, setRows] = useState(1);
+  const [bottomBar, setBottomBar] = useState(false)
+  const [bottomStatica, setBottomStatica] = useState(false)
 
+  const barRef = useRef<HTMLDivElement>(null)
+  const sendButton = useRef<HTMLButtonElement>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
@@ -88,6 +90,16 @@ export function PlaceholdersAndVanishInput({
       startAnimation();
     }
   };
+
+  useEffect(() => {
+    if (rows >= 2 && !bottomBar){
+      setBottomBar(true)
+      setBottomStatica(true)
+    }
+
+
+
+  })
 
   useEffect(() => {
     startAnimation();
@@ -221,6 +233,14 @@ export function PlaceholdersAndVanishInput({
       if (value.trim() && !animating) {
         vanishAndSubmit();
       }
+      return
+    }
+    if (e.key === "tab" && e.shiftKey){
+      e.preventDefault()
+      setBottomBar(true)
+      setBottomStatica(true)
+      requestAnimationFrame(() => sendButton.current?.focus)  
+
     }
   };
 
@@ -313,7 +333,17 @@ export function PlaceholdersAndVanishInput({
 
 
 
-        <div className="p-6 border-t border-gray-700 bg-gray-800/50 rounded-b-2xl">
+        <div ref={barRef}
+        className={cn (
+          "border-t border-black-600  p-5",
+          "transition-[opacity,trasform] duration-10 ease-out",
+          bottomBar? "opacity-500 translate-y-0" : "opacity-900 translate-y-2 pointer-events-none:" 
+        )}
+        aria-hidden={!bottomBar}
+        >
+
+
+
           {/* Contador de caracteres
        {maxLength && (
         <div className="absolute bottom-2 right-12 z-50 text-xs text-gray-400">
