@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Icon } from "@iconify/react";
+import { motion as framerMotion, AnimatePresence as FramerAnimatePresence } from "framer-motion"
+
 
 export function PlaceholdersAndVanishInput({
   placeholders,
@@ -23,11 +25,8 @@ export function PlaceholdersAndVanishInput({
   const [value, setValue] = useState("")
   const [animating, setAnimating] = useState(false)
   const [rows, setRows] = useState(1);
-  const [bottomBar, setBottomBar] = useState(false)
-  const [bottomStatica, setBottomStatica] = useState(false)
 
-  const barRef = useRef<HTMLDivElement>(null)
-  const sendButton = useRef<HTMLButtonElement>(null)
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
@@ -91,15 +90,6 @@ export function PlaceholdersAndVanishInput({
     }
   };
 
-  useEffect(() => {
-    if (rows >= 2 && !bottomBar){
-      setBottomBar(true)
-      setBottomStatica(true)
-    }
-
-
-
-  })
 
   useEffect(() => {
     startAnimation();
@@ -235,13 +225,6 @@ export function PlaceholdersAndVanishInput({
       }
       return
     }
-    if (e.key === "tab" && e.shiftKey){
-      e.preventDefault()
-      setBottomBar(true)
-      setBottomStatica(true)
-      requestAnimationFrame(() => sendButton.current?.focus)  
-
-    }
   };
 
 
@@ -289,12 +272,14 @@ export function PlaceholdersAndVanishInput({
 
   return (
     <form
+
       className={cn(
-        "w-full relative max-w-160 mx-auto dark:bg-zinc-800 border-2 border-indigo-300 rounded-2xl overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
+        "w-full relative max-w-160 mx-auto border-2 border-indigo-400 outline-2 outline-fuchsia-950 rounded-2xl overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
         value && "bg-[#1C2433]"
       )}
       onSubmit={handleSubmit}
     >
+
       <canvas
         className={cn(
           "absolute pointer-events-none text-base transform scale-50 top-2 left-2 sm:left-4 origin-top-left filter invert dark:invert-0 pr-20",
@@ -303,7 +288,7 @@ export function PlaceholdersAndVanishInput({
         ref={canvasRef}
       />
 
-      <div>
+      <div className="ralative flex flex-col">
         <textarea
           ref={textareaRef}
           rows={rows}
@@ -332,33 +317,32 @@ export function PlaceholdersAndVanishInput({
         />
 
 
-
-        <div ref={barRef}
-        className={cn (
-          "border-t border-black-600  p-5",
-          "transition-[opacity,trasform] duration-10 ease-out",
-          bottomBar? "opacity-500 translate-y-0" : "opacity-900 translate-y-2 pointer-events-none:" 
-        )}
-        aria-hidden={!bottomBar}
-        >
-
-
+        <div className="flex items-center justify-between backdrop-blur-sm px-4 py-4 rounded-b-2xl ">
 
           {/* Contador de caracteres
-       {maxLength && (
-        <div className="absolute bottom-2 right-12 z-50 text-xs text-gray-400">
-          {value.length}/{maxLength}
-        </div>
-      )} */}
-          
-          
-          <Icon icon="lucide:pin" className="w-5 h-5 text-blue-600 mr-2 "  />
+          {maxLength && (
+            <div className="absolute bottom-4 right-20 z-50 text-xs text-gray-400">
+              {value.length}/{maxLength}
+            </div>
+          )} */}
 
+
+          <Icon icon="lucide:pin" className="w-5 h-5 text-blue-600 mr-2 " />
+
+          <Icon icon="lucide:cpu" className="w-5 h-5 text-blue-600 mr-2 " />
+
+          <Icon icon="lucide:paperclip" className="w-5 h-5 text-blue-600 mr-2 " />
+
+
+
+
+          <button
+          />
 
           <button
             disabled={!value.trim() || animating}
             type="submit"
-            className="absolute right-3 bottom-3 z-50 h-8 w-8 rounded-full disabled:bg-indigo-600 bg-blue-600 dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
+            className="absolute right-3 z-50 h-8 w-8 rounded-full disabled:bg-indigo-600 bg-blue-600 dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
           >
 
             <motion.svg
@@ -396,34 +380,34 @@ export function PlaceholdersAndVanishInput({
       </div>
 
 
-        <div className="absolute inset-0 flex items-start rounded-2xl pointer-events-none pt-3">
-          <AnimatePresence mode="wait">
-            {!value && (
-              <motion.p
-                initial={{
-                  y: 5,
-                  opacity: 0,
-                }}
-                key={`current-placeholder-${currentPlaceholder}`}
-                animate={{
-                  y: 0,
-                  opacity: 1,
-                }}
-                exit={{
-                  y: -15,
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.8,
-                  ease: "linear",
-                }}
-                className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-8 text-left w-[calc(100%-2rem)] truncate"
-              >
-                {placeholders[currentPlaceholder]}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
+      <div className="absolute inset-0 flex items-start rounded-2xl pointer-events-none pt-3">
+        <AnimatePresence mode="wait">
+          {!value && (
+            <motion.p
+              initial={{
+                y: 5,
+                opacity: 0,
+              }}
+              key={`current-placeholder-${currentPlaceholder}`}
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              exit={{
+                y: -15,
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: "linear",
+              }}
+              className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-8 text-left w-[calc(100%-2rem)] truncate"
+            >
+              {placeholders[currentPlaceholder]}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
     </form >
   );
 }
