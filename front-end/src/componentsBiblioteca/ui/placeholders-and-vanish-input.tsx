@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Icon } from "@iconify/react";
 import { motion as framerMotion, AnimatePresence as FramerAnimatePresence } from "framer-motion"
+import { HoverBorderGradient } from "./hover-border-gradient";
 
 
 export function PlaceholdersAndVanishInput({
@@ -272,14 +273,15 @@ export function PlaceholdersAndVanishInput({
 
   return (
     <form
-
+      
+    onSubmit={handleSubmit}
+    
       className={cn(
         "w-full relative max-w-160 mx-auto border-2 border-indigo-400 outline-2 outline-fuchsia-950 rounded-2xl overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
         value && "bg-[#1C2433]"
       )}
-      onSubmit={handleSubmit}
-    >
 
+      >
       <canvas
         className={cn(
           "absolute pointer-events-none text-base transform scale-50 top-2 left-2 sm:left-4 origin-top-left filter invert dark:invert-0 pr-20",
@@ -408,6 +410,7 @@ export function PlaceholdersAndVanishInput({
           )}
         </AnimatePresence>
       </div>
+
     </form >
   );
 }
