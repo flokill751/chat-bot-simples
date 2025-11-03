@@ -2,10 +2,11 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
-import { Particles } from "./components/background/Pontinho"
-import { Tsteinput } from "./components/inputs/testInput"
-import SidebarDrawer from "./components/siderBar/SidebarDrawer"
-import type { Conversa, } from "./components/types/types"
+import { Particles } from "./componentsChat/background/Pontinho"
+import { Tsteinput } from "./componentsChat/inputs/TestInput"
+import SidebarDrawer from "./componentsChat/siderBar/SidebarDrawer"
+import type { Conversa, } from "./componentsChat/types/types"
+
 
 export default function App() {
   const [conversaAtual, setConversaAtual] = useState<number>(0)
@@ -86,7 +87,7 @@ export default function App() {
 
   return (
     <div className="flex h-screen font-sans bg-gray-900 text-white p-2">
-      
+
       <SidebarDrawer
         conversasList={todasConversas}
         onNovoChat={handleNovoChat}
@@ -124,7 +125,7 @@ export default function App() {
             <div className="flex items-start justify-start">
               <div className="w-8 h-8 rounded-full bg-b-500 flex items-center justify-center text-sm font-bold shrink-0">K</div>
               <div className="p-4 rounded-2xl shadow-md bg-gray-800 ml-2 max-w-[45%]">
-                <strong className="block mb-1 text-sm opacity-80">Kimera</strong>
+                <strong className="block mb-1 text-sm opacity-800">Kimera</strong>
                 <CarregandoDots text="Pensando" />
               </div>
             </div>

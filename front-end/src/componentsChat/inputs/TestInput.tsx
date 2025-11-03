@@ -1,18 +1,16 @@
 "use client"
 
-import { PlaceholdersAndVanishInput } from "../../componentsBiblioteca/ui/placeholders-and-vanish-input"
+import { PlaceholdersAndVanishInput } from "../../components/ui/placeholders-and-vanish-input"
 import type React from "react"
 import { useState } from "react"
 import { enviarMensagem } from "../../api"
-
-
-
 
 interface Mensagem {
   id: string
   autor: string
   texto: string
   timestamp?: string
+  estilo?: string
 }
 
 interface Conversa {
@@ -26,12 +24,12 @@ interface TsteinputProps {
   conversaAtual: number
   todasConversas: Conversa[]
   setTodasConversas: React.Dispatch<React.SetStateAction<Conversa[]>>
-  setcarregando: React.Dispatch<React.SetStateAction<boolean>>;
+  setcarregando: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: TsteinputProps) {
+export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando, todasConversas }: TsteinputProps) {
   const [mensagem, setMensagem] = useState("")
-
+  const conversa = todasConversas[conversaAtual]
 
   const placeholders = [
     "Permita-me dirimir qualquer questão exposta.",
@@ -44,9 +42,7 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
   const gerarId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
   const handleEnviar = async (textoMensagem: string) => {
-
-
-    if (!textoMensagem.trim()) return;
+    if (!textoMensagem.trim()) return
 
     setcarregando(true)
 
@@ -55,7 +51,7 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
       autor: "Você",
       texto: textoMensagem,
       timestamp: new Date().toISOString(),
-    };
+    }
 
     setTodasConversas((prev) => {
       const novasConversas = [...prev]
@@ -76,7 +72,7 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
       return novasConversas
     })
 
-    setMensagem("");
+    setMensagem("")
 
     try {
       const resposta = await enviarMensagem(textoMensagem)
@@ -85,6 +81,7 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
         autor: "Kimera",
         texto: resposta.resposta,
         timestamp: new Date().toISOString(),
+        estilo: "text-indigo-600 font-bold italic",
       }
 
       setTodasConversas((prev) => {
@@ -111,7 +108,7 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
           mensagens: [...novasConversas[conversaAtual].mensagens, mensagemErro],
           ultimoAcesso: new Date().toISOString(),
         }
-        return novasConversas;
+        return novasConversas
       })
     } finally {
       setcarregando(false)
@@ -119,16 +116,18 @@ export function Tsteinput({ conversaAtual, setTodasConversas, setcarregando }: T
   }
 
   return (
-    <div className="flex flex-1 rounded-full border-white/20 overflow-hidden">
+    <div className="flex flex-col flex-1 rounded-full border-white/20 overflow-hidden">
+         
       <PlaceholdersAndVanishInput
         placeholders={placeholders}
         value={mensagem}
         onChange={(e) => setMensagem(e.target.value)}
         onSend={handleEnviar}
       />
-
     </div>
   )
-
 }
+
+
+
 

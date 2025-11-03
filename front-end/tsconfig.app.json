@@ -27,7 +27,7 @@
     /* Alias para componentes */
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/componentsBiblioteca/*"]
+      "@components/*": ["src/components/*"]
     }
   },
   "include": ["src"]

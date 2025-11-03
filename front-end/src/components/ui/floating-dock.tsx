@@ -1,5 +1,6 @@
-import { cn } from "../../lib/utils";
+import { cn } from "../../components/lib/utils";
 import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
+
 import {
   AnimatePresence,
   MotionValue,
@@ -96,7 +97,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
+        "mx-auto hidden h-11 items-end gap-4 rounded-2xl px-4 pb-1 md:flex bg-white opacity-80",
         className,
       )}
     >
@@ -126,10 +127,10 @@ function IconContainer({
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
+  let widthTransform = useTransform(distance, [-130, 0, 130], [35, 50, 35]);
+  let heightTransform = useTransform(distance, [-135, 0, 135], [35, 50, 35]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 40, 20]);
+  let widthTransformIcon = useTransform(distance, [-125, 0, 125], [20, 40, 20]);
   let heightTransformIcon = useTransform(
     distance,
     [-150, 0, 150],
@@ -167,7 +168,7 @@ function IconContainer({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex aspect-square items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-800"
+        className="relative flex aspect-square items-center justify-center rounded-full bg-gray-500"
       >
         <AnimatePresence>
           {hovered && (
