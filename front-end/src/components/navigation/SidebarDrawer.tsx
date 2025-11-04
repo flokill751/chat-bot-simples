@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react"
 import UserDropdown from "../inputs/UserDrodown"
-import Scrollbar from "../scrollBar/ScrollBar"
+import Scrollbar from "../display/ScrollBar"
 import ChatDropdown from "../inputs/ChatDropdown"
-import type { Conversa, } from '../types/types'
+import type { Conversa, } from '../../types/chat'
 
 
 

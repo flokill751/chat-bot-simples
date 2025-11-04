@@ -1,4 +1,4 @@
-import { FloatingDock } from "../../components/ui/floating-dock";
+import { FloatingDock } from "../ui/animated/floating-dock";
 import {
   IconBrandGithub,
   IconBrandX,

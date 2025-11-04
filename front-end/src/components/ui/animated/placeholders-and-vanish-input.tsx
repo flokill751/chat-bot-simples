@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import { FloatingDock } from "./floating-dock";
 import { IconCpu, IconHome } from "@tabler/icons-react";
 // import { Icon } from "@iconify/react";

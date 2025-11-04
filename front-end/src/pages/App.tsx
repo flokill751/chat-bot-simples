@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
-import { Particles } from "./componentsChat/background/Pontinho"
-import { Tsteinput } from "./componentsChat/inputs/TestInput"
-import SidebarDrawer from "./componentsChat/siderBar/SidebarDrawer"
-import type { Conversa, } from "./componentsChat/types/types"
+import { Particles } from "../components/backgrounds/Pontinho"
+import { Tsteinput } from "../components/inputs/TestInput"
+import SidebarDrawer from "../components/navigation/SidebarDrawer"
+import type { Conversa, } from "../types/chat"
 
 
 export default function App() {
