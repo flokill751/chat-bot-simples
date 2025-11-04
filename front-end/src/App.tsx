@@ -21,7 +21,7 @@ export default function App() {
     },
   ])
 
-
+  
   const mensagensEndRef = useRef<HTMLDivElement>(null)
   const { resolvedTheme } = useTheme()
   const [color, setColor] = useState("#ffffff")
