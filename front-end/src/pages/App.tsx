@@ -1,12 +1,9 @@
-"use client"
-
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
 import { Particles } from "../components/backgrounds/Pontinho"
 import { Tsteinput } from "../components/inputs/TestInput"
 import SidebarDrawer from "../components/navigation/SidebarDrawer"
 import type { Conversa, } from "../types/chat"
-
 
 export default function App() {
   const [conversaAtual, setConversaAtual] = useState<number>(0)
