@@ -1,4 +1,4 @@
-import { cn } from "../../components/lib/utils";
+import { cn } from "../../lib/utils";
 import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
 
 import {
@@ -76,7 +76,7 @@ const FloatingDockMobile = ({
       </AnimatePresence>
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
+        className="flex h-11 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
       >
         <IconLayoutNavbarCollapse className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
       </button>
@@ -97,7 +97,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-11 items-end gap-4 rounded-2xl px-4 pb-1 md:flex bg-white opacity-80",
+        "mx-auto hidden h-11 items-end gap-4 border-gray-800 rounded-2xl px-4 pb-1 md:flex bg-gray-800 opacity-80",
         className,
       )}
     >
@@ -110,7 +110,7 @@ const FloatingDockDesktop = ({
 
 function IconContainer({
   mouseX,
-  title,
+  // title,
   icon,
   href,
 }: {
@@ -127,8 +127,8 @@ function IconContainer({
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-130, 0, 130], [35, 50, 35]);
-  let heightTransform = useTransform(distance, [-135, 0, 135], [35, 50, 35]);
+  let widthTransform = useTransform(distance, [-150, 0, 150], [30, 35, 30]);
+  let heightTransform = useTransform(distance, [-150, 0, 150], [30, 35, 30]);
 
   let widthTransformIcon = useTransform(distance, [-125, 0, 125], [20, 40, 20]);
   let heightTransformIcon = useTransform(
@@ -168,9 +168,9 @@ function IconContainer({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex aspect-square items-center justify-center rounded-full bg-gray-500"
+        className="relative flex aspect-square items-center justify-center rounded-full bg-blue-800"
       >
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {hovered && (
             <motion.div
               initial={{ opacity: 0, y: 10, x: "-50%" }}
@@ -181,7 +181,7 @@ function IconContainer({
               {title}
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
           className="flex items-center justify-center"

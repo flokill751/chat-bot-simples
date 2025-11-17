@@ -1,9 +1,9 @@
 "use client"
 
-import { PlaceholdersAndVanishInput } from "../../components/ui/placeholders-and-vanish-input"
+import { PlaceholdersAndVanishInput } from "../../components/ui/animated/placeholders-and-vanish-input"
 import type React from "react"
 import { useState } from "react"
-import { enviarMensagem } from "../../api"
+import { enviarMensagem } from "../../services/api"
 
 interface Mensagem {
   id: string

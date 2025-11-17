@@ -1,12 +1,11 @@
-"use client"
-
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
-import { Particles } from "./componentsChat/background/Pontinho"
-import { Tsteinput } from "./componentsChat/inputs/TestInput"
-import SidebarDrawer from "./componentsChat/siderBar/SidebarDrawer"
-import type { Conversa, } from "./componentsChat/types/types"
-
+import { Particles } from "../components/backgrounds/Pontinho"
+import { Tsteinput } from "../components/inputs/TestInput"
+import SidebarDrawer from "../components/navigation/SidebarDrawer"
+import type { Conversa, } from "../types/chat"
+import MarkdownRenderer from "../components/display/MarkdownRender"
+// import ReactMarkdown from "react-markdown"
 
 export default function App() {
   const [conversaAtual, setConversaAtual] = useState<number>(0)
@@ -100,6 +99,7 @@ export default function App() {
         <Particles quantity={350} color="#c57676ff" size={1} staticity={45} ease={80} className="opacity-85" />
 
         <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 relative z-10">
+          
           {conversa.map((msg) => (
             <div
               key={msg.id}
@@ -112,11 +112,17 @@ export default function App() {
               )}
 
               <div
-                className={`p-4 rounded-2xl break-words shadow-md w-fit max-w-[45%] ${msg.autor === "Você" ? "bg-gray-700 ml-2" : "bg-gray-800 ml-2"
+                className={`p-4 rounded-2xl break-words shadow-md w-fit max-w-[45%] 
+                  ${msg.autor === "Você" ? "bg-gray-700 ml-2" : "bg-gray-800 ml-2"
                   }`}
               >
                 <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
-                {msg.texto}
+
+                {/* {msg.texto} */}
+                <MarkdownRenderer content={msg.texto} />
+
+
+
               </div>
             </div>
           ))}
