@@ -5,6 +5,7 @@ import { Tsteinput } from "../components/inputs/TestInput"
 import SidebarDrawer from "../components/navigation/SidebarDrawer"
 import type { Conversa, } from "../types/chat"
 import MarkdownRenderer from "../components/display/MarkdownRender"
+import Markdown from "react-markdown"
 // import ReactMarkdown from "react-markdown"
 
 export default function App() {
@@ -118,10 +119,9 @@ export default function App() {
               >
                 <strong className="block mb-1 text-sm opacity-80">{msg.autor}</strong>
 
-                {/* {msg.texto} */}
-                <MarkdownRenderer content={msg.texto} />
-
-
+          
+                <MarkdownRenderer content={msg.texto} />  
+          
 
               </div>
             </div>

@@ -30,11 +30,11 @@ export default function SidebarDrawer({
       {/* Header moderno com bordas arredondadas no topo */}
       <div className="p-6 border-b border-gray-700 bg-gradient-to-r from-gray-900 to-gray-800 rounded-t-2xl">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-800 flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-green-800 flex items-center justify-center shadow-lg">
             <Icon icon="lucide:bot" className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
               Kimera
             </h2>
             <p className="text-xs text-gray-400 font-medium">O demonio da sua ia </p>
@@ -46,7 +46,7 @@ export default function SidebarDrawer({
       <div className="p-4">
         <button
           className="flex items-center gap-3 w-full p-4 rounded-xl text-left transition-all duration-200 
-                     bg-gradient-to-r from-blue-700 to-purple-800 hover:from-blue-500 hover:to-purple-500 
+                     bg-gradient-to-r from-blue-700 to-green-800 hover:from-blue-500 hover:to-green-500 
                      text-white shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] 
                      border border-blue-400/20 group"
           onClick={onNovoChat}

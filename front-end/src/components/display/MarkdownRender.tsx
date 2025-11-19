@@ -1,4 +1,6 @@
 import ReactMarkdown from "react-markdown"
+// import * as LucideIcons from "lucide-react"
+
 
 interface MarkdownRendererProps {
   content: string
@@ -12,9 +14,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           h1: ({ ...props }) => <h1 className="text-2xl font-bold mt-4 mb-2 text-white" {...props} />,
           h2: ({ ...props }) => <h2 className="text-xl font-bold mt-3 mb-2 text-white" {...props} />,
           h3: ({ ...props }) => <h3 className="text-lg font-bold mt-2 mb-1 text-white" {...props} />,
+          h4: ({ ...props }) => <h4 className="text-md font-bold mt-2 mb-1 text-white" {...props} />,
           p: ({ ...props }) => <p className="mb-2 text-gray-100" {...props} />,
           ul: ({ ...props }) => <ul className="list-disc list-inside mb-2 text-gray-100" {...props} />,
           ol: ({ ...props }) => <ol className="list-decimal list-inside mb-2 text-gray-100" {...props} />,
+          br: () => <br />,
+          div: ({ ...props }) => <div className="mb-2" {...props} />,
+
           li: ({ ...props }) => <li className="mb-1" {...props} />,
           code: ({ ...props }) => (
             <code className="bg-gray-700 text-gray-200 px-2 py-1 rounded text-sm font-mono" {...props} />
@@ -38,3 +44,4 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     </div>
   )
 }
+

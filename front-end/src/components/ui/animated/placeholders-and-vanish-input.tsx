@@ -279,7 +279,7 @@ export function PlaceholdersAndVanishInput({
       onSubmit={handleSubmit}
       className={cn(
          "w-full relative max-w-160 mx-auto rounded-2xl shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
-        "bg-gradient-to-r from-blue-700  via-gray-500 to-purple-900"
+        "bg-gradient-to-r from-blue-700  via-gray-500 to-green-900"
       )}
       style={{
         padding: "1px" 
